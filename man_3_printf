@@ -1,0 +1,108 @@
+PRINTF(3)                    Programmer's Manual         
+
+NAME                                                                            printf
+
+SYNOPSIS
+#include <stdio.h>
+#include "holberton.h"
+#include <stdarg.h>
+#include <stdlib.h>
+
+int printf(const char *format, ...);
+
+DESCRIPTION
+       The function above of the printf() family produce output according to a format i.e. the function printf() write output to stdout, it also write the output under the control of a format string that specifies how subsequent arguments(or arguments accessed via the variable-length argument facilities are converted for output.
+
+Format of the format string
+       The format string is a character string, beginning and ending in its initial shift state, if any.  The format  stringis composed of zero or more directives: ordinary characters (not %), which are copied unchanged to the output stream;and conversion specifications, each of which results in fetching zero or more subsequent arguments.  Each  conversion specification  is  introduced  by the character %, and ends with a conversion specifier.  In between there may be (in this order) zero or more flags, an optional minimum field width, an optional precision and an optional length modifier.
+
+       The  arguments  must correspond properly (after type promotion) with the conversion specifier.  By default, the arguments are used in the order given, where each '*' and each conversion specifier asks for the next argument (and it is an error if insufficiently many arguments are given).
+
+Flag characters  
+
+ The character % is followed by zero or more of the following flags:
+
+       #      The value should be converted to an "alternate form".  For o conversions, the first character  of  the  output
+              string  is made zero (by prefixing a 0 if it was not zero already).  For x and X conversions, a nonzero result
+              has the string "0x" (or "0X" for X conversions) prepended to it.  For a, A, e, E, f, F, g, and G  conversions,
+              the result will always contain a decimal point, even if no digits follow it (normally, a decimal point appears
+              in the results of those conversions only if a digit follows).  For g and G conversions, trailing zeros are not
+              removed from the result as they would otherwise be.  For other conversions, the result is undefined.
+
+       0      The  value should be zero padded.  For d, i, o, u, x, X, a, A, e, E, f, F, g, and G conversions, the converted
+              value is padded on the left with zeros rather than blanks.  If the 0 and - flags both appear, the  0  flag  is
+              ignored.   If  a  precision  is given with a numeric conversion (d, i, o, u, x, and X), the 0 flag is ignored.
+              For other conversions, the behavior is undefined.
+
+       -      The converted value is to be left adjusted on the field boundary.  (The default is right justification.)   The
+              converted  value  is padded on the right with blanks, rather than on the left with blanks or zeros.  A - over‐
+              rides a 0 if both are given.
+
+       ' '    (a space) A blank should be left before a positive number (or empty string) produced by a signed conversion.
+
+       +      A sign (+ or -) should always be placed before a number produced by a signed conversion.  By default,  a  sign
+              is used only for negative numbers.  A + overrides a space if both are used.
+
+
+Field width                                                                                                                  
+       An optional decimal digit string (with nonzero first digit) specifying a minimum field width. if the result of a conversion is wider than  the  field    
+       width, the field is expanded to contain the conversion result. 
+
+Precision                                                                                                                    
+       An  optional  precision,  in  the form of a period ('.')  followed by an optional decimal digit string.
+
+Conversion specifiers
+       A character that specifies the type of conversion to be applied.  The conversion specifiers and their meanings are:
+
+       d, i   The int argument is converted to signed decimal notation.  The precision, if any, gives the minimum number  of
+              digits  that  must  appear; if the converted value requires fewer digits, it is padded on the left with zeros.
+              The default precision is 1.  When 0 is printed with an explicit precision 0, the output is empty.
+
+       c      If no l modifier is present, the int argument is converted to an unsigned char, and the resulting character is    
+              written.   If  an  l modifier is present, the wint_t (wide character) argument is converted to a multibyte se‐    
+              quence by a call to the wcrtomb(3) function, with a conversion state starting in the initial  state,  and  the    
+              resulting multibyte string is written.                                                                            
+                                                                                              
+       s      If  no  l  modifier is present: the const char * argument is expected to be a pointer to an array of character    
+              type (pointer to a string).  Characters from the array are written up to (but  not  including)  a  terminating    
+              null  byte ('\0'); if a precision is specified, no more than the number specified are written.  If a precision    
+              is given, no null byte need be present; if the precision is not specified, or is greater than the size of  the    
+              array, the array must contain a terminating null byte.                                                            
+                                                                                                                                
+              If  an  l  modifier  is  present: the const wchar_t * argument is expected to be a pointer to an array of wide    
+              characters.  Wide characters from the array are converted to multibyte characters (each by a call to the  wcr‐    
+              tomb(3)  function,  with a conversion state starting in the initial state before the first wide character), up    
+              to and including a terminating null wide character.  The resulting multibyte characters are written up to (but    
+              not  including)  the terminating null byte.  If a precision is specified, no more bytes than the number speci‐    
+              fied are written, but no partial multibyte characters are written.  Note that  the  precision  determines  the    
+              number of bytes written, not the number of wide characters or screen positions.  The array must contain a ter‐    
+              minating null wide character, unless a precision is given and it is so small that the number of bytes  written    
+              exceeds it before the end of the array is reached.        
+
+       p      The void * pointer argument is printed in hexadecimal (as if by %#x or %#lx).                                     
+                                                                                                                                
+       n      The  number  of characters written so far is stored into the integer pointed to by the corresponding argument.    
+              That argument shall be an int *, or variant whose size matches the (optionally) supplied integer length  modi‐    
+              fier.   No argument is converted.  (This specifier is not supported by the bionic C library.)  The behavior is    
+              undefined if the conversion specification includes any flags, a field width, or a precision.                      
+                                                                                                                                
+       m      Print output of strerror(errno).  No argument is required.      
+                                                                                                                                
+       %      A '%' is written.  No argument is converted.  The complete conversion specification is '%%'.              
+
+
+
+RETURN VALUE                                                                                                                    
+       Upon successful return, these functions return the number of characters printed (excluding the null byte used to  end    
+       output to strings).   
+
+
+BUGS 
+
+No known bugs
+
+COLOPHON
+ This man page was brought together for alx-holberton project on printf
+
+Author
+ Adeolu A. O.(Some extracts where gotten from man page in linux)
