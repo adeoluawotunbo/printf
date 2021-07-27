@@ -36,7 +36,7 @@ if (fun_ptr != NULL)
 
 {
 fun_ptr(listVar);
-positionFormat++; /*mirar despues*/
+positionFormat++;
 }
 
 else
