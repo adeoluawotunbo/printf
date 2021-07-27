@@ -1,35 +1,29 @@
 #ifndef HOLBERTON_H
 #define HOLBERTON_H
 
-
+#include <stdlib.h>
 #include <stdarg.h>
 
-int _putchar(char c);
-int print_int(va_list arg);
-int print_unsigned(va_list arg);
-int _printf(const char *format, ...);
-int print_char(va_list arg);
-int print_str(va_list arg);
-int print_percent(void);
-void print_binary(unsigned int n, unsigned int* printed);
-int print_unsignedToBinary(va_list arg);
-int print_oct(va_list arg);
-int print_unsignedIntToHex(unsigned int num, char _case);
-int print_hex_base(va_list arg, char _case);
-int print_hex(va_list arg);
-int print_HEX(va_list arg);
-int print_STR (va_list arg);
-
 /**
- * struct identifierStruct - structure definition of a printtypestruct
- *
- * @indentifier: type of the structure
- * @printer: function to be printed.
+ * struct list_specifiers - structure of format which receives the _printf
+ * function
+ * @specifier: character that represent the format specifier
+ * @f: Pointer to a function associated to the format specifier
  */
-typedef struct identifierStruct
+
+typedef struct list_specifiers
 {
-char *indentifier;
-int (*printer)(va_list);
-} identifierStruct;
+char *specifier;
+int (*f)();
+} list_specifiers;
+
+int _putchar(char c);
+int _printf(const char *format, ...);
+int _strlen(char *s);
+int (*get_specifier(const char *s))(va_list);
+int print_str(va_list s);
+int print_char(va_list c);
+int print_integer(va_list list);
+int print_percent(va_list perc);
 
 #endif

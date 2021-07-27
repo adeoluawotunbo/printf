@@ -1,100 +1,51 @@
 #include "holberton.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 /**
- * printIdentifiers - prints special characters
- * @next: character after the %
- * @arg: argument for the indentifier
+ * _printf - the main function
+ * @format: pointer to a string with conversion specifiers
  *
- * Return: the number of characters printed
- * (excluding the null byte used to end output to strings)
- */
-
-int printIdentifiers(char next, va_list arg)
-{
-int functsIndex;
-
-identifierStruct functs[] = {
-{"c", print_char},
-{"s", print_str},
-{"d", print_int},
-{"i", print_int},
-{"u", print_unsigned},
-{"b", print_unsignedToBinary},
-{"o", print_oct},
-{"x", print_hex},
-{"X", print_HEX},
-{"S", print_STR},
-{NULL, NULL}
-
-};
-
-for (functsIndex = 0; functs[functsIndex].indentifier != NULL; functsIndex++)
-{
-if (functs[functsIndex].indentifier[0] == next)
-return (functs[functsIndex].printer(arg));
-}
-return (0);
-}
-
-/**
- * _printf - mimic printf from stdio
- * Description: produces output according to a format
- * write output to stdout, the standard output stream
- * @format: character string composed of zero or more directives
- *
- * Return: the number of characters printed
- * (excluding the null byte used to end output to strings)
- * return -1 for incomplete identifier error
+ * Description: produce output according to a format as the selected conversion
+ * specifiers
+ * Return: 0 success
  */
 
 int _printf(const char *format, ...)
 
 {
-unsigned int i;
-int identifierPrinted = 0, charPrinted = 0;
-va_list arg;
+va_list listVar;
+int (*fun_ptr)(va_list);
+int positionFormat, len;
 
-va_start(arg, format);
-if (format == NULL)
-return (-1);
+va_start(listVar, format);
+positionFormat = 0;
 
-for (i = 0; format[i] != '\0'; i++)
+while (format != NULL && format[positionFormat] != '\0')
 {
-if (format[i] != '%')
+
+if (format[positionFormat] != '%')
+
 {
-_putchar(format[i]);
-charPrinted++;
+_putchar (format[positionFormat]);
+positionFormat++;
 continue;
 }
 
-if (format[i + 1] == '%')
+fun_ptr = get_specifier(format + positionFormat + 1);
+if (fun_ptr != NULL)
+
 {
-_putchar('%');
-charPrinted++;
-i++;
-continue;
+fun_ptr(listVar);
+positionFormat++; /*mirar despues*/
 }
 
-if (format[i + 1] == '\0')
-return (-1);
+else
 
-identifierPrinted = printIdentifiers(format[i + 1], arg);
-
-if (identifierPrinted == -1 || identifierPrinted != 0)
-i++;
-
-if (identifierPrinted > 0)
-charPrinted += identifierPrinted;
-
-if (identifierPrinted == 0)
-{
-_putchar('%');
-charPrinted++;
+_putchar(format[positionFormat]);
+positionFormat++;
 }
 
-}
-va_end(arg);
-return (charPrinted);
+len = positionFormat;
+va_end(listVar);
+return (len);
 }
