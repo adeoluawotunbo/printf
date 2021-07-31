@@ -14,19 +14,19 @@ int (*get_specifier(const char *format))(va_list)
 {
 unsigned int i;
 print_t p[] = {
-{"c", print_char},
-{"s", print_str},
+{"c", print_c},
+{"s", print_s},
 {"%", print_nothing},
-{"d", print_integer},
-{"i", print_integer},
-{"b", print_binary},
-{"u", print_unsigneddecimal},
-{"o", print_unsigneedoctal},
-{"x", print_unsignedhexal},
-{"X", print_unsignedhexacap},
-{"p", print_voidpointerinhexa},
+{"d", print_d},
+{"i", print_i},
+{"b", print_b},
+{"u", print_u},
+{"o", print_o},
+{"x", print_x},
+{"X", print_X},
+{"p", print_p},
 {"S", print_S},
-{"r", print_reversedstr},
+{"r", print_r},
 {"R", print_R}
 {NULL, NULL}
 };
