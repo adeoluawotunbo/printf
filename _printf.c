@@ -16,7 +16,6 @@ unsigned int i;
 print_t p[] = {
 {"c", print_c},
 {"s", print_s},
-{"%", print_nothing},
 {"d", print_d},
 {"i", print_i},
 {"b", print_b},
@@ -27,7 +26,7 @@ print_t p[] = {
 {"p", print_p},
 {"S", print_S},
 {"r", print_r},
-{"R", print_R}
+{"R", print_R},
 {NULL, NULL}
 };
 		
@@ -59,7 +58,7 @@ if (format == NULL)
 return (-1);
 
 
-va_start(listvar, format);
+va_start(listVar, format);
 
 while (format[i])
 {
@@ -71,10 +70,10 @@ len++;
 if (!format[i])
 return (len);
 
-f = check_for_specifiers(&format[i + 1]);
+f = get_specifier(&format[i + 1]);
 if (f != NULL)
 {
-len += f(valist);
+len += f(listVar);
 i += 2;
 continue;
 }
@@ -88,6 +87,6 @@ i += 2;
 else
 i++;
 }
-va_end(listvar);
+va_end(listVar);
 return (len);
 }
