@@ -5,34 +5,42 @@
  * get_specifier - selects the correct function to perform the operation asked
  * by the user
  *
- * @s: convert specifier passed as argument to the program
+ * @format: convert specifier passed as argument to the program
  * Return: a pointer to the function that corresponds to the convert specifier
  * given as a parameter. If s does not match any of the them return NULL.
  */
-int (*get_specifier(const char *s))(va_list)
+int (*get_specifier(const char *format))(va_list)
+
 {
-	list_specifiers array_specifiers[] = {
-		{"c", print_char},
-		{"s", print_str},
-		{"%", print_percent},
-		{"d", print_integer},
-		{"i", print_integer},
-		{NULL, NULL}
-		};
-	int i = 0;
-	int len;
-
-	for (len = 0 ; array_specifiers[len].specifier != NULL ; len++)
-		;
-	while (i < len)
-	{
-		if (*s == *array_specifiers[i].specifier)
-			return (array_specifiers[i].f);
-		i++;
-	}
-	return (NULL);
+unsigned int i;
+print_t p[] = {
+{"c", print_char},
+{"s", print_str},
+{"%", print_nothing},
+{"d", print_integer},
+{"i", print_integer},
+{"b", print_binary},
+{"u", print_unsigneddecimal},
+{"o", print_unsigneedoctal},
+{"x", print_unsignedhexal},
+{"X", print_unsignedhexacap},
+{"p", print_voidpointerinhexa},
+{"S", print_S},
+{"r", print_reversedstr},
+{"R", print_R}
+{NULL, NULL}
+};
+		
+for (i = 0 ; p[i].t != NULL ; i++)
+{
+if (*(p[i].t) == *format)
+{
+break;
 }
-
+}
+return (p[i].f);
+}
+	
 
 /**
  * _printf - produce output according to a format as the selected conversion
@@ -44,35 +52,42 @@ int (*get_specifier(const char *s))(va_list)
 int _printf(const char *format, ...)
 {
 va_list listVar;
-int (*fun_ptr)(va_list);
-int positionFormat, len;
+int (*f)(va_list);
+unsigned int i = 0, len = 0;
 
-va_start(listVar, format);
-positionFormat = 0;
+if (format == NULL)
+return (-1);
 
-while (format != NULL && format[positionFormat] != '\0')
+
+va_start(listvar, format);
+
+while (format[i])
 {
-
-if (format[positionFormat] != '%')
+for (; format[i] != '%' && format[i]; i++)
 {
-_putchar (format[positionFormat]);
-positionFormat++;
+_putchar(format[i]);
+len++;
+}
+if (!format[i])
+return (len);
+
+f = check_for_specifiers(&format[i + 1]);
+if (f != NULL)
+{
+len += f(valist);
+i += 2;
 continue;
 }
 
-fun_ptr = get_specifier(format + positionFormat + 1);
-
-if (fun_ptr != NULL)
-{
-fun_ptr(listVar);
-positionFormat++;
-}
-
+if (!format[i + 1])
+return (-1);
+_putchar(format[i]);
+len++;
+if (format[i + 1] == '%')
+i += 2;
 else
-_putchar(format[positionFormat]);
-positionFormat++;
+i++;
 }
-len = positionFormat;
-va_end(listVar);
+va_end(listvar);
 return (len);
 }
